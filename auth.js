@@ -1,15 +1,39 @@
 // auth.js
 let currentUser = null;
 
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async (user) => {
     currentUser = user;
-    if (user && window.location.pathname.includes('dashboard') && !isAdmin(user)) {
-        window.location.href = 'posts.html';
+    if (user) {
+        const adminEmail = "YOUR_EMAIL@gmail.com"; // Baguhin mo 'to
+        window.isAdmin = user.email === adminEmail;
     }
 });
 
-function isAdmin(user) {
-    return user && (user.email === "YOUR_EMAIL@gmail.com"); // ← Change to your Gmail
+async function register(email, password, username) {
+    try {
+        const snapshot = await db.collection("usernames").where("username", "==", username).get();
+        if (!snapshot.empty) {
+            alert("❌ This username is already taken!");
+            return false;
+        }
+
+        const userCred = await auth.createUserWithEmailAndPassword(email, password);
+        await db.collection("usernames").doc(userCred.user.uid).set({ username });
+        await db.collection("users").doc(userCred.user.uid).set({ username, email });
+        alert("Account created successfully!");
+        return true;
+    } catch (e) {
+        alert("Error: " + e.message);
+        return false;
+    }
+}
+
+async function login(email, password) {
+    try {
+        await auth.signInWithEmailAndPassword(email, password);
+    } catch (e) {
+        alert("Login failed: " + e.message);
+    }
 }
 
 async function loginWithGoogle() {
@@ -17,12 +41,10 @@ async function loginWithGoogle() {
     try {
         await auth.signInWithPopup(provider);
     } catch (e) {
-        console.error(e);
+        alert("Google login error: " + e.message);
     }
 }
 
 function logout() {
-    auth.signOut().then(() => {
-        window.location.href = 'index.html';
-    });
+    auth.signOut().then(() => window.location.href = "index.html");
 }
