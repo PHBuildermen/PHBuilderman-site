@@ -4,12 +4,7 @@ let currentUser = null;
 auth.onAuthStateChanged(async (user) => {
     currentUser = user;
     if (user) {
-        // Admin Check - Ito na ang Gmail mo
         window.isAdmin = (user.email === "ArenasSibayan@gmail.com");
-        
-        if (!window.isAdmin) {
-            console.log("Viewer mode - Limited access");
-        }
     }
 });
 
@@ -54,4 +49,4 @@ function logout() {
     auth.signOut().then(() => {
         window.location.href = "index.html";
     });
-}
+        }
