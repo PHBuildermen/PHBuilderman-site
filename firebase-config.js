@@ -1,12 +1,15 @@
+// firebase-config.js
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY_HERE",
-    authDomain: "your-project.firebaseapp.com",
-    projectId: "your-project",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "1234567890",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",   // ← PALITAN MO ITO
+  authDomain: "phbuilderman-site.firebaseapp.com", // ← PALITAN MO ITO
+  projectId: "phbuilderman-site",                  // ← PALITAN MO ITO
+  storageBucket: "phbuilderman-site.appspot.com",
+  messagingSenderId: "123456789012",               // ← PALITAN MO ITO
+  appId: "1:123456789012:web:xxxxxxxxxxxxxxxxxxxxxxxx" // ← PALITAN MO ITO
 };
 
-const app = firebase.initializeApp(firebaseConfig);
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const db = firebase.firestore();
