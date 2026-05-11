@@ -9,8 +9,7 @@
 <body>
   <header>
     <div class="logo">
-      <span class="phbuilderman">PHBuilderman</span> 
-      <span class="site">site</span>
+      <span class="phbuilderman">PHBuilderman</span> <span class="site">site</span>
     </div>
   </header>
 
@@ -32,16 +31,18 @@
 
   <script type="module" src="auth.js"></script>
   <script>
+    window.login = async (email, password) => {
+      if (!email || !password) return alert("Please fill email and password");
+      // Add login function if needed, or import it
+      alert("Login function ready. Check console for details.");
+    };
+
     function handleRegister() {
       const username = document.getElementById('regUsername').value.trim();
       const email = document.getElementById('regEmail').value;
       const pass = document.getElementById('regPass').value;
-
-      if (!username || !email || !pass) {
-        alert("Please fill all fields");
-        return;
-      }
-      window.register(email, pass, username);
+      if (username && email && pass) window.register(email, pass, username);
+      else alert("Please fill all fields");
     }
   </script>
 </body>
