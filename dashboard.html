@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">Admin Panel</div>
+    <button onclick="logout()" class="btn">Logout</button>
+  </header>
 
+  <div style="max-width:800px; margin:40px auto; padding:20px;">
+    <h2>Add New YouTube Post</h2>
+    <form id="postForm">
+      <input type="text" id="youtubeLink" placeholder="YouTube Link" required><br><br>
+      <input type="text" id="title" placeholder="Title" required><br><br>
+      <textarea id="description" placeholder="Description" rows="4" required></textarea><br><br>
+      <input type="text" id="thumbnail" placeholder="Thumbnail URL (optional)"><br><br>
+      <input type="text" id="category" placeholder="Category (e.g. Minecraft, Tutorial)" required><br><br>
+      <button type="submit" class="btn btn-primary">Publish Post</button>
+    </form>
+  </div>
+
+  <script src="firebase-config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    document.getElementById('postForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentUser || !isAdmin(currentUser)) {
+        alert("Admin access only!");
+        return;
+      }
+
+      const post = {
+        youtubeLink: document.getElementById('youtubeLink').value,
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        thumbnail: document.getElementById('thumbnail').value || "https://via.placeholder.com/640x360",
+        category: document.getElementById('category').value,
+        date: new Date().toISOString()
+      };
+
+      await db.collection("posts").add(post);
+      alert("Post published successfully!");
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
